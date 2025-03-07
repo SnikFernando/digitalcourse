@@ -18,7 +18,7 @@ public interface UserMapper {
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "userID", ignore = true)
     //@Mapping(target = "userDni", ignore = true)
-    @Mapping(target = "passwordHash", ignore = true)
+    @Mapping(target = "passwordHash", source = "password")
     @Mapping(target = "statusRegistry", ignore = true)
     User toEntity(UserDTO userDTO);
 
