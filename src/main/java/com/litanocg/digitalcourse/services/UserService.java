@@ -54,6 +54,8 @@ public class UserService {
             return Mono.error(new IllegalArgumentException("UserDTO cannot be null"));
         }
 
+
+
         return userRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for id: " + id)))
                 .flatMap(existingUser -> {
