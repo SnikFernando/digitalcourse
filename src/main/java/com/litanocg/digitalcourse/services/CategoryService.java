@@ -4,9 +4,7 @@ import com.litanocg.digitalcourse.entities.Category;
 import com.litanocg.digitalcourse.entities.dtos.CategoryDTO;
 import com.litanocg.digitalcourse.entities.dtos.MessageResponse;
 import com.litanocg.digitalcourse.entities.mappers.CategoryMapper;
-import com.litanocg.digitalcourse.entities.mappers.UserMapper;
 import com.litanocg.digitalcourse.repositories.CategoryRepository;
-import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -21,8 +19,7 @@ public class CategoryService {
     private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
 
     public Flux<CategoryDTO> getAllCategories(){
-        return categoryRepository.findAll()
-                .map(categoryMapper::toDTO);
+        return categoryRepository.findAll().map(categoryMapper::toDTO);
     }
 
     public Mono<CategoryDTO> getCategoryById(Long id){
