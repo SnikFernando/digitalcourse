@@ -1,9 +1,9 @@
 package com.litanocg.digitalcourse.repositories;
 
-import com.litanocg.digitalcourse.entities.Category;
+import com.litanocg.digitalcourse.entities.Course;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryRepository extends ReactiveCrudRepository<Category, Long> {
+public interface CourseRepository extends ReactiveCrudRepository<Course, Long> {
 }

@@ -1,9 +1,9 @@
 package com.litanocg.digitalcourse.controllers;
 
-import com.litanocg.digitalcourse.entities.Course;
-import com.litanocg.digitalcourse.entities.dtos.CourseDTO;
+import com.litanocg.digitalcourse.entities.Coupon;
+import com.litanocg.digitalcourse.entities.dtos.CouponDTO;
 import com.litanocg.digitalcourse.entities.dtos.MessageResponse;
-import com.litanocg.digitalcourse.services.CourseService;
+import com.litanocg.digitalcourse.services.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,35 +14,35 @@ import reactor.core.publisher.Mono;
 
 @Validated
 @RestController
-@RequestMapping({"/courses"})
-public class CoursesController {
+@RequestMapping("/coupons")
+public class CouponController {
 
     @Autowired
-    private CourseService courseService;
+    private CouponService couponService;
 
     @GetMapping
-    public Flux<Course> getAllCourses() {
-        return courseService.getAllCourses();
+    public Flux<Coupon> getAllCoupons() {
+        return couponService.getAllCoupons();
     }
 
     @GetMapping("/{id}")
-    public Mono<CourseDTO> getCourseById(@PathVariable Long id){
-        return courseService.getCourseById(id);
+    public Mono<CouponDTO> getCouponById(@PathVariable Long id) {
+        return couponService.getCouponById(id);
     }
 
     @PostMapping
-    public Mono<CourseDTO> createCourse(@Validated @RequestBody CourseDTO course){
-        return courseService.createCourse(course);
+    public Mono<CouponDTO> createCoupon(@Validated @RequestBody CouponDTO coupon) {
+        return couponService.createCoupon(coupon);
     }
 
     @PutMapping("/{id}")
-    public Mono<CourseDTO> updateCourse(@PathVariable Long id, @RequestBody CourseDTO course){
-        return courseService.updateCourse(id, course);
+    public Mono<CouponDTO> updateCoupon(@PathVariable Long id, @RequestBody CouponDTO coupon) {
+        return couponService.updateCoupon(id, coupon);
     }
 
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<MessageResponse>> deleteCourse(@PathVariable Long id){
-        return courseService.deleteCourse(id)
+    public Mono<ResponseEntity<MessageResponse>> deleteCoupon(@PathVariable Long id) {
+        return couponService.deleteCoupon(id)
                 .map(response -> {
                     if (response.getMessage().contains("no existe")) {
                         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -50,6 +50,5 @@ public class CoursesController {
                     return ResponseEntity.ok(response);
                 });
     }
-
 
 }
