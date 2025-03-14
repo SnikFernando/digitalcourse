@@ -6,6 +6,7 @@ import com.litanocg.digitalcourse.entities.mappers.UserMapper;
 import com.litanocg.digitalcourse.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
@@ -17,8 +18,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
 
     private final UserMapper userMapper = UserMapper.INSTANCE;
+
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     public Flux<User> getAllUsers() {
@@ -34,14 +40,19 @@ public class UserService {
             return Mono.error(new IllegalArgumentException("UserDTO cannot be null"));
         }
 
-        return userRepository.save(userMapper.toEntity(userDTO)).map(userMapper::toDTO);
+        String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
+
+        User user = userMapper.toEntity(userDTO);
+        user.setPasswordHash(hashedPassword);
+
+        return userRepository.save(user).map(userMapper::toDTO);
+//        return userRepository.save(userMapper.toEntity(userDTO)).map(userMapper::toDTO);
     }
 
     public Mono<UserDTO> updateUser(Long id, UserDTO userDTO) {
         if (userDTO == null) {
             return Mono.error(new IllegalArgumentException("UserDTO cannot be null"));
         }
-
         return userRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for id: " + id)))
                 .flatMap(existingUser -> {
